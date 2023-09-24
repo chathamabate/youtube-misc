@@ -1,5 +1,36 @@
 # Boolean Reduction Notes
 
+## Motivation
+
+Using well known rules, a human can reduce a normal math expression even
+if it has unknowns.
+
+```python
+# For example...
+2(x + 5) - x - 10
+
+= 2x + 10 - x - 10
+
+= 2x - x + 10 - 10
+
+= x
+```
+
+The same is the case for boolean expressions!
+
+```python
+(b and not a) or a
+
+= (b or a) and (not a or a)
+
+= (b or a) and True
+
+= b or a
+```
+
+Is there a foolproof sequence of steps a computer could use 
+to complete boolean reductions like the one above?
+
 ## AST Definition
 ```python
 v(x)            # An identifier with name x.
