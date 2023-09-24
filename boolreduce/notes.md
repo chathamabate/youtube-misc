@@ -15,11 +15,19 @@ if(e1, e2, e3)  # If e1 resolves to 1, then e2, otherwise e3. (Ternary)
 ```
 __NOTE__ that all types above are themselves valid expressions.
 
+### Example
+
 __ALSO NOTE__ that for the remainder of this document we will be transforming
 the following expression as an example.
 
 ```python
-or(and(b, not(a)), a)
+or(
+    and(
+        v(b), 
+        not(v(a))
+    ), 
+    v(a)
+)
 ```
 ![initial](./pics/initial.svg)
 
@@ -62,6 +70,61 @@ toIf(if(e1, e2, e3)) =
         toIf(e2), toIf(e3))
 ```
 
+### Example
+```python
+# Initial 
+or(
+    and(
+        v(b), 
+        not(v(a))
+    ), 
+    v(a)
+)
+```
+![initial](./pics/initial.svg)
+
+```python
+# toIf Part 1
+or(
+    and(
+        v(b), 
+        if(v(a), imm(0), imm(1))
+    ), 
+    v(a)
+)
+```
+
+![toIf1](./pics/toIf1.svg)
+
+```python
+# toIf Part 2
+or(
+    if(
+        v(b), 
+        if(v(a), imm(0), imm(1)),
+        imm(0)
+    ), 
+    v(a)
+)
+```
+
+![toIf2](./pics/toIf2.svg)
+
+```python
+# toIf Part 3 
+if(
+    if(
+        v(b), 
+        if(v(a), imm(0), imm(1)),
+        imm(0)
+    ), 
+    imm(1),
+    v(a)
+)
+```
+
+![toIf3](./pics/toIf3.svg)
+
 ## `norm` Definition
 
 This function converts an if expression into a normal if expression. 
@@ -84,7 +147,6 @@ imm(1)
 ```
 The `norm` function abides by the following recursive definition.
 ```python
-
 # First we define a helper funciton: join.
 #
 # This function takes an if expression whose 3 subexpressions 
@@ -108,6 +170,36 @@ norm(imm(c)) = imm(c)
 norm(if(e1, e2, e3)) = join(if(norm(e1), norm(e2), norm(e3)))
 ```
 
+### Example
+
+```python
+# Initial
+if(
+    if(
+        v(b), 
+        if(v(a), imm(0), imm(1)),
+        imm(0)
+    ), 
+    imm(1),
+    v(a)
+)
+```
+![Norm Initial](./pics/norm0.svg)
+
+```python
+# Normed
+if(
+    v(b), 
+    if(
+        v(a), 
+        if(imm(0), imm(1), v(a)), 
+        if(imm(1), imm(1), v(a))
+    ), 
+    if(imm(0), imm(1), v(a))
+)
+```
+![Normed](./pics/norm.svg)
+
 ## `eval` Definition
 This function converts a normal if expression into a equivalent, potentially reduced 
 normal if expression.
@@ -129,6 +221,98 @@ eval(if(v(x), e2, e3)) =
         otherwise if(v(x), r2, r3)
 ```
 
+### Example
+
+```python
+# Initial
+if(
+    v(b), 
+    if(
+        v(a), 
+        if(imm(0), imm(1), v(a)), 
+        if(imm(1), imm(1), v(a))
+    ), 
+    if(imm(0), imm(1), v(a))
+)
+```
+![Eval 0](./pics/eval0.svg)
+
+```python
+# Eval Part 1
+if(
+    v(b), 
+    if(
+        v(a), 
+        if(imm(0), imm(1), imm(1)), 
+        if(imm(1), imm(1), v(a))
+    ), 
+    if(imm(0), imm(1), v(a))
+)
+```
+![Eval 1](./pics/eval1.svg)
+
+```python
+# Eval Part 2
+if(
+    v(b), 
+    if(
+        v(a), 
+        imm(1),
+        if(imm(1), imm(1), v(a))
+    ), 
+    if(imm(0), imm(1), v(a))
+)
+```
+![Eval 2](./pics/eval2.svg)
+
+```python
+# Eval Part 3
+if(
+    v(b), 
+    if(
+        v(a), 
+        imm(1),
+        if(imm(1), imm(1), v(0))
+    ), 
+    if(imm(0), imm(1), v(a))
+)
+```
+![Eval 3](./pics/eval3.svg)
+
+```python
+# Eval Part 4
+if(
+    v(b), 
+    if(
+        v(a), 
+        imm(1),
+        imm(1)
+    ), 
+    if(imm(0), imm(1), v(a))
+)
+```
+![Eval 4](./pics/eval4.svg)
+
+```python
+# Eval Part 5
+if(
+    v(b), 
+    imm(1),
+    if(imm(0), imm(1), v(a))
+)
+```
+![Eval 5](./pics/eval5.svg)
+
+```python
+# Eval Part 6
+if(
+    v(b), 
+    imm(1),
+    v(a)
+)
+```
+![Eval 6](./pics/eval6.svg)
+
 ## `reduce` Definition
 This function converts an if expression back to a general boolean expression.
 
@@ -143,3 +327,23 @@ reduce(e1, imm(0), imm(1))  = not(reduce(e1))
 reduce(e1, imm(1) e2)   = or(reduce(e1), reduce(e2))
 reduce(e1, e2, imm(0))  = and(reduce(e1), reduce(e2))      
 ```
+
+### Example
+
+```python
+# Initial 
+if(
+    v(b), 
+    imm(1),
+    v(a)
+)
+```
+
+![Reduce 0](./pics/reduce0.svg)
+
+```python
+# Reduced
+or(v(b), v(a))
+```
+
+![Reduce](./pics/reduce.svg)
