@@ -1,0 +1,9 @@
+
+// Reduce
+digraph G {
+    n0 [label="Or"];
+    n0 -> n1;
+    n1 [label="b"];
+    n0 -> n2;
+    n2 [label="a"];
+}

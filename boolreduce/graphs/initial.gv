@@ -1,0 +1,17 @@
+
+// Initial
+digraph G {
+    node [shape="box"];
+
+    n0 [label="Or"];
+    n0 -> n1;
+    n1 [label="And"];
+    n1 -> n2;
+    n2 [label="b"];
+    n1 -> n3;
+    n3 [label="Not"];
+    n3 -> n4;
+    n4 [label="a"];
+    n0 -> n5;
+    n5 [label="a"];
+}

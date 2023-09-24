@@ -13,8 +13,15 @@ if(e1, e2, e3)  # If e1 resolves to 1, then e2, otherwise e3. (Ternary)
                 # NOTE e1 is known as the "condition", e2 as the "consequence",
                 # and e3 as the "alternative".
 ```
-
 __NOTE__ that all types above are themselves valid expressions.
+
+__ALSO NOTE__ that for the remainder of this document we will be transforming
+the following expression as an example.
+
+```python
+or(and(b, not(a)), a)
+```
+![initial](./pics/initial.svg)
 
 ## `toIf` Definition
 
@@ -101,21 +108,21 @@ norm(imm(c)) = imm(c)
 norm(if(e1, e2, e3)) = join(if(norm(e1), norm(e2), norm(e3)))
 ```
 
-## `opt` Definition
-This function converts a normal if expression into a equivalent, potentially optimized 
+## `eval` Definition
+This function converts a normal if expression into a equivalent, potentially reduced 
 normal if expression.
 
 ```python
-opt(v(x))    = v(x)
-opt(imm(c))  = imm(c)
+eval(v(x))    = v(x)
+eval(imm(c))  = imm(c)
 
-opt(if(imm(1), e2, e3)) = opt(e2)
-opt(if(imm(0), e2, e3)) = opt(e3)
+eval(if(imm(1), e2, e3)) = eval(e2)
+eval(if(imm(0), e2, e3)) = eval(e3)
 
-opt(if(v(x), e2, e3)) = 
+eval(if(v(x), e2, e3)) = 
     define
-        r2 as opt(e2[v(x) <- imm(1)])
-        r3 as opt(e3[v(x) <- imm(0)])
+        r2 as eval(e2[v(x) <- imm(1)])
+        r3 as eval(e3[v(x) <- imm(0)])
     in
         when r2 = r3 then r2
         when r2 = imm(1) and r3 = imm(0) then v(x)
