@@ -1,6 +1,7 @@
 
 // Eval 2
 digraph G {
+    node [shape = "box"]
     n0 [label="If"];
     n0 -> n1;
     n1 [label="b"];
@@ -9,7 +10,7 @@ digraph G {
     n2 -> n3;
     n3 [label="a"];
     n2 -> n4;
-    n4 [label="1"];
+    n4 [label="1" color = "red"];
     n2 -> n5;
     n5 [label="If"];
     n5 -> n6;

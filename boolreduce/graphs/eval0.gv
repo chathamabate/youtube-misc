@@ -1,6 +1,7 @@
 
 // Norm.
 digraph G {
+    node [shape="box"]
     n0 [label="If"];
     n0 -> n1;
     n1 [label="b"];

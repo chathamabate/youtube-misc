@@ -1,11 +1,13 @@
 
 // Eval 5
 digraph G {
+    node [shape = "box"]
+
     n0 [label="If"];
     n0 -> n1;
     n1 [label="b"];
     n0 -> n2;
-    n2 [label="1"];
+    n2 [label="1" color="red"];
     n0 -> n3;
     n3 [label="If"];
     n3 -> n4;
