@@ -29,7 +29,9 @@ or(
     v(a)
 )
 ```
-![initial](./pics/initial.svg)
+<p align="center">
+    <img src="./pics/initial.svg">
+</p>
 
 ## `toIf` Definition
 
@@ -81,7 +83,9 @@ or(
     v(a)
 )
 ```
-![initial](./pics/initial.svg)
+<p align="center">
+    <img src="./pics/initial.svg">
+</p>
 
 ```python
 # toIf Part 1
@@ -94,7 +98,9 @@ or(
 )
 ```
 
-![toIf1](./pics/toIf1.svg)
+<p align="center">
+    <img src="./pics/toIf1.svg">
+</p>
 
 ```python
 # toIf Part 2
@@ -108,7 +114,9 @@ or(
 )
 ```
 
-![toIf2](./pics/toIf2.svg)
+<p align="center">
+    <img src="./pics/toIf2.svg">
+</p>
 
 ```python
 # toIf Part 3 
@@ -123,7 +131,9 @@ if(
 )
 ```
 
-![toIf3](./pics/toIf3.svg)
+<p align="center">
+    <img src="./pics/toIf3.svg">
+</p>
 
 ## `norm` Definition
 
@@ -184,7 +194,9 @@ if(
     v(a)
 )
 ```
-![Norm Initial](./pics/norm0.svg)
+<p align="center">
+    <img src="./pics/norm0.svg">
+</p>
 
 ```python
 # Normed
@@ -198,7 +210,9 @@ if(
     if(imm(0), imm(1), v(a))
 )
 ```
-![Normed](./pics/norm.svg)
+<p align="center">
+    <img src="./pics/norm.svg">
+</p>
 
 ## `eval` Definition
 This function converts a normal if expression into a equivalent, potentially reduced 
@@ -235,7 +249,9 @@ if(
     if(imm(0), imm(1), v(a))
 )
 ```
-![Eval 0](./pics/eval0.svg)
+<p align="center">
+    <img src="./pics/eval0.svg">
+</p>
 
 ```python
 # Eval Part 1
@@ -249,7 +265,9 @@ if(
     if(imm(0), imm(1), v(a))
 )
 ```
-![Eval 1](./pics/eval1.svg)
+<p align="center">
+    <img src="./pics/eval1.svg">
+</p>
 
 ```python
 # Eval Part 2
@@ -263,7 +281,9 @@ if(
     if(imm(0), imm(1), v(a))
 )
 ```
-![Eval 2](./pics/eval2.svg)
+<p align="center">
+    <img src="./pics/eval2.svg">
+</p>
 
 ```python
 # Eval Part 3
@@ -277,7 +297,9 @@ if(
     if(imm(0), imm(1), v(a))
 )
 ```
-![Eval 3](./pics/eval3.svg)
+<p align="center">
+    <img src="./pics/eval3.svg">
+</p>
 
 ```python
 # Eval Part 4
@@ -291,7 +313,9 @@ if(
     if(imm(0), imm(1), v(a))
 )
 ```
-![Eval 4](./pics/eval4.svg)
+<p align="center">
+    <img src="./pics/eval4.svg">
+</p>
 
 ```python
 # Eval Part 5
@@ -301,7 +325,9 @@ if(
     if(imm(0), imm(1), v(a))
 )
 ```
-![Eval 5](./pics/eval5.svg)
+<p align="center">
+    <img src="./pics/eval5.svg">
+</p>
 
 ```python
 # Eval Part 6
@@ -311,7 +337,9 @@ if(
     v(a)
 )
 ```
-![Eval 6](./pics/eval6.svg)
+<p align="center">
+    <img src="./pics/eval6.svg">
+</p>
 
 ## `reduce` Definition
 This function converts an if expression back to a general boolean expression.
@@ -339,11 +367,15 @@ if(
 )
 ```
 
-![Reduce 0](./pics/reduce0.svg)
+<p align="center">
+    <img src="./pics/reduce0.svg">
+</p>
 
 ```python
 # Reduced
 or(v(b), v(a))
 ```
 
-![Reduce](./pics/reduce.svg)
+<p align="center">
+    <img src="./pics/reduce.svg">
+</p>
