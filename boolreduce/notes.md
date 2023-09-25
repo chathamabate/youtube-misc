@@ -7,6 +7,7 @@ if it has unknowns.
 
 ```python
 # For example...
+
 2(x + 5) - x - 10
 
 = 2x + 10 - x - 10
@@ -19,9 +20,9 @@ if it has unknowns.
 The same is the case for boolean expressions!
 
 ```python
-(b and not a) or a
+(b and (not a)) or a
 
-= (b or a) and (not a or a)
+= (b or a) and ((not a) or a)
 
 = (b or a) and True
 
@@ -197,11 +198,11 @@ The `norm` function abides by the following recursive definition.
 join(if(v(x), e2, e3))      = if(v(x), e2, e3)
 join(if(imm(c), e2, e3))    = if(imm(c), e2, e3)
 
-join(if(if(v(x), e2, e3), e4, e5) =
-    if(v(x), join(if(e2, e4, e5)), join(if(e3, e4, e5))
+join(if(if(v(x), e2, e3), e4, e5)) =
+    if(v(x), join(if(e2, e4, e5)), join(if(e3, e4, e5)))
 
-join(if(if(imm(c), e2, e3), e4, e5) =
-    if(imm(c), join(if(e2, e4, e5)), join(if(e3, e4, e5))
+join(if(if(imm(c), e2, e3), e4, e5)) =
+    if(imm(c), join(if(e2, e4, e5)), join(if(e3, e4, e5)))
 
 # Now for norm.
 
