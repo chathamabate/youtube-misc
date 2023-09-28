@@ -47,7 +47,7 @@ if(e1, e2, e3)  # If e1 resolves to 1, then e2, otherwise e3. (Ternary)
 ```
 __NOTE__ that all types above are themselves valid expressions.
 
-### Example
+#### Example
 
 __ALSO NOTE__ that for the remainder of this document we will be transforming
 the following expression as an example.
@@ -65,7 +65,9 @@ or(
     <img src="./pics/initial.svg">
 </p>
 
-## `toIf` Definition
+## Algorithm
+
+### `toIf` Definition
 
 This function takes an expression and converts it into a equal if expression.
 
@@ -104,7 +106,7 @@ toIf(if(e1, e2, e3)) =
         toIf(e2), toIf(e3))
 ```
 
-### Example
+#### Example
 ```python
 # Initial 
 or(
@@ -167,7 +169,7 @@ if(
     <img src="./pics/toIf3.svg">
 </p>
 
-## `norm` Definition
+### `norm` Definition
 
 This function converts an if expression into a normal if expression. 
 
@@ -212,7 +214,7 @@ norm(imm(c)) = imm(c)
 norm(if(e1, e2, e3)) = join(if(norm(e1), norm(e2), norm(e3)))
 ```
 
-### Example
+#### Example
 
 ```python
 # Initial
@@ -246,7 +248,7 @@ if(
     <img src="./pics/norm.svg">
 </p>
 
-## `eval` Definition
+### `eval` Definition
 This function converts a normal if expression into a equivalent, potentially reduced 
 normal if expression.
 
@@ -267,7 +269,7 @@ eval(if(v(x), e2, e3)) =
         otherwise if(v(x), r2, r3)
 ```
 
-### Example
+#### Example
 
 ```python
 # Initial
@@ -373,7 +375,7 @@ if(
     <img src="./pics/eval6.svg">
 </p>
 
-## `reduce` Definition
+### `reduce` Definition
 This function converts an if expression back to a general boolean expression.
 
 __NOTE__ `reduce` is the inverse of `toIf`.
@@ -388,7 +390,7 @@ reduce(e1, imm(1) e2)   = or(reduce(e1), reduce(e2))
 reduce(e1, e2, imm(0))  = and(reduce(e1), reduce(e2))      
 ```
 
-### Example
+#### Example
 
 ```python
 # Initial 
@@ -411,3 +413,32 @@ or(v(b), v(a))
 <p align="center">
     <img src="./pics/reduce.svg">
 </p>
+
+## Exponential Pitfalls
+
+### Result Nodes and Nested Conditions
+
+In a normal if expression, a __result node__ is a varible or immediate which is
+not in the condition position of a ternary.
+
+```python
+# imm(1), v(y), and v(z) are all "results" of the ternary below.
+# v(x) and imm(0) are not results as they are conditions.
+if(v(x), if(imm(0), imm(1), v(y)), v(z))
+```
+
+Given an if expression `E`, how many result nodes will appear in `norm(E)`?
+
+```python 
+# given E is an if expression,
+# resNodes(E) = the number of result nodes in norm(E)
+
+resNodes(imm(c))    = 1
+resNodes(v(x))      = 1
+
+resNodes(if(e1, e2, e3))    = resNodes(e1) * (resNodes(e2) + resNodes(e3))
+```
+
+
+
+## Improvement Stragtegies 
