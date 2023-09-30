@@ -414,52 +414,46 @@ or(v(b), v(a))
     <img src="./pics/reduce.svg">
 </p>
 
-## Exponential Normal Forms
+## Immutable Trees and Improving `norm`
 
-The largest pitfall of this algorithm is that some trees can grow exponentially 
-when normalized. 
+It's important to understand how the above transformations may behave 
+when actually implemented.
 
-Note that I use the word *some*. If we structure our expressions correctly,
-this problem can be avoided.
+As each transformation is defined as a mathematical function, this algorithm 
+translates best into a functional implementation. That is, we will be using
+trees which themselves are immutable.
 
-### Subtree Reuse
+```python
+toIf(v(x)) = v(x)
+```
 
-The above algorithm requires no mutation of trees. During each transformation,
-if a tree needs to be *modified*, a new tree can instead be created and returned.
+Consider the above case taken from the `toIf` transformation. Since no tree can
+be modified, it is ok for one tree to be referenced in multiple places.
 
-So, if we implement our transformations well, a single instance of a 
-tree can appear as a subtree in multple trees.
+So, here, we need not allocate a new node representing the variable `x`.
+We can rather just return a reference to the node we were given.
 
-As no tree can be modified, there is no threat of corrupting one tree
-by using another.
-
-Most notably, a single instance of a tree can appear as a subtree multple times
-in the same parent tree.
+This is most powerful in situations like the one below. This tree could have 
+a separate piece of memory allocated for every node. However, this would be wasteful!
 
 <p align="center">
     <img src="./pics/unique_rep0.svg">
 </p>
 
-For example, imagine each node in the above tree resides in its own unique place
-in memory. This approach would be wasteful as the same subtree (highlighted in red)
-appears twice in the same tree.
-
-Instead, it would be better to store the tree as follows.
-
+The subtrees highlighted in red above are semantically equivalent. Thus, from a
+memory perspective, we could instead store our tree like the one below. 
+Here the red subtree only exists in memory once. 
+Since it is immutable, it is ok for the subtree to be a child of both `a` and `b`.
 
 <p align="center">
     <img src="./pics/unique_rep1.svg">
 </p>
 
-A strong implementation of the transformations above would ensure a new tree
-is only constructed when needed. Thus, minimizing the true size of 
-returned tree in memory.
+### What does this have to do with `norm`?
 
-### Ok, but what does this look like?
+Our definition of `norm` is efficient in some ways, but very inefficient in others.
 
-Here is a tree we are about to normalize. 
-The outermost if expression isn't normal.
-Addistionally, the consequce of the outermost isn't normal.
+For example, consider the following expression tree.
 
 <p align="center">
     <img src="./pics/unique_norm_rep0.svg">
@@ -472,25 +466,19 @@ look something like this.
     <img src="./pics/unique_norm_rep1.svg">
 </p>
 
-However, by taking advantage of the power of immutability, a strong
-implementation would instead produce the following tree.
+However, in this case, our definition will not make copies of 
+the consequence and alternative expressions. The resulting tree
+in memory, will instead look something like this.
 
 
 <p align="center">
     <img src="./pics/unique_norm_rep2.svg">
 </p>
 
-### So, where's the problem?
+The above tree is perfect in the sense that each unique subtree is only stored 
+once. It would be nice if our definition of `norm` always returned trees like
+this.
 
-Well, while our reduced graph above has many less nodes than its initial form,
-it has the same number of paths from the root to the result nodes (g, h, and i).
-
-If our reduced graph above were the final product, this wouldn't be a problem.
-
-However, what if our reduced graph was actually in the condition position
-Is there a way??? Is there a way to optimize this??
+The problem lies in our `join` function.
 
 
-
-
-## Improvement Stragtegies 
