@@ -414,30 +414,82 @@ or(v(b), v(a))
     <img src="./pics/reduce.svg">
 </p>
 
-## Exponential Pitfalls
+## Exponential Normal Forms
 
-### Result Nodes and Nested Conditions
+The largest pitfall of this algorithm is that some trees can grow exponentially 
+when normalized. 
 
-In a normal if expression, a __result node__ is a varible or immediate which is
-not in the condition position of a ternary.
+Note that I use the word *some*. If we structure our expressions correctly,
+this problem can be avoided.
 
-```python
-# imm(1), v(y), and v(z) are all "results" of the ternary below.
-# v(x) and imm(0) are not results as they are conditions.
-if(v(x), if(imm(0), imm(1), v(y)), v(z))
-```
+### Subtree Reuse
 
-Given an if expression `E`, how many result nodes will appear in `norm(E)`?
+The above algorithm requires no mutation of trees. During each transformation,
+if a tree needs to be *modified*, a new tree can instead be created and returned.
 
-```python 
-# given E is an if expression,
-# resNodes(E) = the number of result nodes in norm(E)
+So, if we implement our transformations well, a single instance of a 
+tree can appear as a subtree in multple trees.
 
-resNodes(imm(c))    = 1
-resNodes(v(x))      = 1
+As no tree can be modified, there is no threat of corrupting one tree
+by using another.
 
-resNodes(if(e1, e2, e3))    = resNodes(e1) * (resNodes(e2) + resNodes(e3))
-```
+Most notably, a single instance of a tree can appear as a subtree multple times
+in the same parent tree.
+
+<p align="center">
+    <img src="./pics/unique_rep0.svg">
+</p>
+
+For example, imagine each node in the above tree resides in its own unique place
+in memory. This approach would be wasteful as the same subtree (highlighted in red)
+appears twice in the same tree.
+
+Instead, it would be better to store the tree as follows.
+
+
+<p align="center">
+    <img src="./pics/unique_rep1.svg">
+</p>
+
+A strong implementation of the transformations above would ensure a new tree
+is only constructed when needed. Thus, minimizing the true size of 
+returned tree in memory.
+
+### Ok, but what does this look like?
+
+Here is a tree we are about to normalize. 
+The outermost if expression isn't normal.
+Addistionally, the consequce of the outermost isn't normal.
+
+<p align="center">
+    <img src="./pics/unique_norm_rep0.svg">
+</p>
+
+After we normalize, we may expect the resulting tree to 
+look something like this.
+
+<p align="center">
+    <img src="./pics/unique_norm_rep1.svg">
+</p>
+
+However, by taking advantage of the power of immutability, a strong
+implementation would instead produce the following tree.
+
+
+<p align="center">
+    <img src="./pics/unique_norm_rep2.svg">
+</p>
+
+### So, where's the problem?
+
+Well, while our reduced graph above has many less nodes than its initial form,
+it has the same number of paths from the root to the result nodes (g, h, and i).
+
+If our reduced graph above were the final product, this wouldn't be a problem.
+
+However, what if our reduced graph was actually in the condition position
+Is there a way??? Is there a way to optimize this??
+
 
 
 

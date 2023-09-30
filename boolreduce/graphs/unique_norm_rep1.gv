@@ -1,0 +1,76 @@
+digraph G {
+    node [shape="box"]
+
+    n0 [label="If"];
+    n1 [label="a"];
+    n0 -> n1;
+    n2 [label="If"];
+    n3 [label="b"];
+    n2 -> n3;
+
+    subgraph L {
+        node [color="purple"];
+        edge [color="purple"];
+
+        n4 [label="If"];
+        n5 [label="d"];
+        n4 -> n5;
+        n6 [label="If"];
+        n7 [label="e"];
+        n6 -> n7;
+        n8 [label="g" color="green"];
+        n6 -> n8;
+        n9 [label="h" color="green"];
+        n6 -> n9;
+        n4 -> n6;
+        n10 [label="If"];
+        n11 [label="f"];
+        n10 -> n11;
+        n12 [label="g" color="green"];
+        n10 -> n12;
+        n13 [label="h" color="green"];
+        n10 -> n13;
+        n4 -> n10;
+        n2 -> n4;
+        n14 [label="i"];
+    }
+
+    n2 -> n14;
+    n0 -> n2;
+
+// Going to fix this part.
+
+    n15 [label="If"];
+    n16 [label="c"];
+    n15 -> n16;
+
+    subgraph R {
+        node [color="purple"];
+        edge [color="purple"];
+
+        n17 [label="If"];
+        n18 [label="d"];
+        n17 -> n18;
+        n19 [label="If"];
+        n20 [label="e"];
+        n19 -> n20;
+        n21 [label="g" color="green"];
+        n19 -> n21;
+        n22 [label="h" color="green"];
+        n19 -> n22;
+        n17 -> n19;
+        n23 [label="If"];
+        n24 [label="f"];
+        n23 -> n24;
+        n25 [label="g" color="green"];
+        n23 -> n25;
+        n26 [label="h" color="green"];
+        n23 -> n26;
+        n17 -> n23;
+        n15 -> n17;
+        n27 [label="i"];
+    }
+
+    n15 -> n27;
+    n0 -> n15;
+}

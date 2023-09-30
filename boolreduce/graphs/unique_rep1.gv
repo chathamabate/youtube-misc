@@ -1,0 +1,27 @@
+
+digraph G {
+    node [shape="box"];
+
+    n0 [label="a"];
+    n1 [label="b"];
+    n5 [label="c"];
+
+    n0 -> n1;
+
+    subgraph S {
+        node [color="red"]; 
+        edge [color="red"]; 
+
+        n2 [label="d"];
+        n3 [label="e"];
+        n2 -> n3;
+        n4 [label="f"];
+        n2 -> n4;
+    }
+
+    n1 -> n2;
+    n1 -> n5;
+
+    n0 -> n2;
+}
+
