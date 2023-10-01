@@ -481,4 +481,24 @@ this.
 
 The problem lies in our `join` function.
 
+```python
+# Optimal join/norm definition.
+# join will now accept a normal consequence and alternative,
+# and an arbitrary if-expression condition.
+# 
+# It will still return an equivalent normal expression.
+
+join(if(imm(c), ne2, ne3)) = if(imm(c), ne2, ne3)
+join(if(v(x), ne2, ne3)) = if(v(x), ne2, ne3)
+
+join(if(if(e1, e2, e3), ne2, ne3)) = 
+    join(if(e1, join(if(e2, ne2, ne3)), join(if(e3, ne2, ne3))))
+
+norm(imm(c)) = imm(c)
+norm(v(x)) = v(x)
+
+norm(if(e1, e2, e3)) = join(if(e1, norm(e2), norm(e3)))
+
+```
+
 
