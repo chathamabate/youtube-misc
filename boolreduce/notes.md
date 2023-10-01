@@ -464,6 +464,8 @@ look something like this.
 
 <p align="center">
     <img src="./pics/unique_norm_rep1.svg">
+    <br>
+    fig 1
 </p>
 
 However, in this case, our definition will not make copies of 
@@ -473,13 +475,29 @@ in memory, will instead look something like this.
 
 <p align="center">
     <img src="./pics/unique_norm_rep2.svg">
+    <br>
+    fig 2
 </p>
 
 The above tree is perfect in the sense that each unique subtree is only stored 
 once. It would be nice if our definition of `norm` always returned trees like
 this.
 
-The problem lies in our `join` function.
+The problem lies in our old `join` function.
+
+Imagine that our above tree is actually the condition of an outer if expression.
+While our tree is initially efficient with its memory usage, when it is run through
+`join`, it will be completely reconstructed to point to the outer
+consequence and alternative trees.
+
+The outer consequence and alternative trees will only exist once in memory
+as intended. However, our condition will be completely unraveled.
+From a memory perspective, it will go from looking like `fig 2`
+to looking like `fig 1`. All the efficencies of its initial normalized form
+will be lost when joined with an outer consequence and alternative.
+
+To get around this issue, it would be better to implement `join` and `norm` 
+as follows.
 
 ```python
 # Optimal join/norm definition.
